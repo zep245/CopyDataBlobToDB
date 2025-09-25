@@ -1,0 +1,9 @@
+{
+	"name": "test-data-dev",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "d347ac06-6786-4a44-911e-7e25c22686f8",
+		"tenantId": "d0851dfd-0b51-4dd2-b347-5d5ba4831ae6"
+	}
+}
