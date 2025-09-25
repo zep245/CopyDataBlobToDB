@@ -1,0 +1,19 @@
+name: ADF CI
+
+on:
+  push:
+    branches:
+      - '**'   # run on all branches
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Upload ADF ARM templates
+      uses: actions/upload-artifact@v3
+      with:
+        name: adf_arm_templates
+        path: adf_publish
