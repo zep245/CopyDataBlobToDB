@@ -1,0 +1,34 @@
+name: ADF CD
+
+on:
+  push:
+    branches:
+      - release/test   # deploy to Test
+      - main           # deploy to Prod
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Download ARM templates
+      uses: actions/download-artifact@v3
+      with:
+        name: adf_arm_templates
+        path: adf_publish
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy ADF
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ github.ref == 'refs/heads/release/test' && secrets.AZURE_RG_TEST || secrets.AZURE_RG_PROD }}
+        template: adf_publish/ARMTemplateForFactory.json
+        parameters: adf_publish/ARMTemplateParametersForFactory.json
+        deploymentName: adf-deployment-${{ github.ref_name }}
